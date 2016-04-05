@@ -1,6 +1,6 @@
 #Toil33t
 
-We are given a [web interface](toil33t.quals.nuitduhack.com) which lets us log in using a username, password, and email. Once we login, we are provided with a cookie such as
+We are given a [web interface](http://toil33t.quals.nuitduhack.com) which lets us log in using a username, password, and email. Once we login, we are provided with a cookie such as
 
 ```
 939c4dcbc5c09d3aaa00469fc65bbd6b5d998eabd9fd50d71639ffd19fadaeb23164706a5409b80800d7b98a576d11546cb3b01c5a57390325c7f6a18a4183c2e601b92d49560ffcac94c6271400069e
