@@ -56,7 +56,7 @@ QUIT
 
 The base-64 encoded text seems to be an attachment called `file.zip`. Once we base-64 decode the string back to a zip file and try to open it, we realize that it is password-protected.
 
-Going back to Wireshark, we use the fitler `smtp` to filter out non-SMTP packets. We then notice a second SMTP stream:
+Going back to Wireshark, we use the filter `smtp` to filter out non-SMTP packets. We then notice a second SMTP stream:
 
 ```
 220 wren.wv.cc.cmu.edu Python SMTP proxy version 0.2
