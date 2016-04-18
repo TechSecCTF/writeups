@@ -49,7 +49,8 @@ def rabit_stew(s):
     msg = msg.strip()
     print(msg[msg.index('lsb'):msg.index('lsb') + 8])
 
-    # guess that 2 is a QR modulo N
+    # Use the below if statement instead if 2 is not a QR modulo N
+    # if i % 2 == 1:
     if True:
       if (left + right) % 2 == 1:
         if('lsb is 0' in msg):
@@ -68,6 +69,10 @@ def rabit_stew(s):
             left = mid + 1
           else:
             left = mid
+    # This branch deals with the case when 2 is not a QR mod N
+    # If so, we have to flip the lsb for ciphertexts of the form
+    # (2^d * m)^2 for odd d, beacause they will decrypt to -(2^d * m)
+    # instead, which has opposite parity to 2^d * m.
     else:
       if (left + right) % 2 == 1:
         if('lsb is 1' in msg):
