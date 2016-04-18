@@ -12,7 +12,7 @@ Furthermore, given that 2m (mod N) is even and 4m (mod N) is even, we know that 
 
 Thus, by querying the LSB's of 2^d • m (mod N) for d = 1, 2, 3 ..., we can use binary search to pin down the range of m until we've found it exactly.
 
-There are a couple of details ommitted in the above explanation. First of all, to rate-limit requests, the server requires a proof-of-work from the client in the form of computing a SHA1 which ends in `ffffff`.
+There are a couple of details omitted in the above explanation. First of all, to rate-limit requests, the server requires a proof-of-work from the client in the form of computing a SHA1 which ends in `ffffff`.
 
 Second of all, it is not always the case that 2^d • m will be a quadratic residue if d is odd. Namely, if 2 is not a quadratic residue modulo N, then the square of 2^d • m will decrypt to -(2^d • m) instead of 2^d • m. Since this number will have the opposite parity, we have to flip the bit that we receive from the server. Luckily, in this case 2 was a QR modulo N, so this aside was not relevant.
 

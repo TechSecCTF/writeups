@@ -54,7 +54,7 @@ QUIT
 221 Bye
 ```
 
-The base-64 encoded text seems to be an attatchment called `file.zip`. Once we base-64 decode the string back to a zip file and try to open it, we realize that it is password-protected.
+The base-64 encoded text seems to be an attachment called `file.zip`. Once we base-64 decode the string back to a zip file and try to open it, we realize that it is password-protected.
 
 Going back to Wireshark, we use the fitler `smtp` to filter out non-SMTP packets. We then notice a second SMTP stream:
 
