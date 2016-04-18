@@ -68,24 +68,6 @@ def rabit_stew(s):
             left = mid + 1
           else:
             left = mid
-    else:
-      if (left + right) % 2 == 1:
-        if('lsb is 1' in msg):
-          right = (left + right - 1) / 2
-        else:
-          left = (left + right + 1) / 2
-      else:
-        mid = (left + right) / 2
-        if('lsb is 1' in msg):
-          if ((mid << (i + 1)) % N) % 2 == 0:
-            right = mid
-          else:
-            right = mid - 1
-        else:
-          if ((mid << (i + 1)) % N) % 2 == 0:
-            left = mid + 1
-          else:
-            left = mid
 
     if left == right:
       print("DONE")
