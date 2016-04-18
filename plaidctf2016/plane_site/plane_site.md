@@ -8,4 +8,6 @@ Binarize[ColorNegate[ColorSeparate[<image>][[1]]], 0]
 
 which yields:
 
+[flag](https://github.com/TechSecCTF/writeups/blob/master/plaidctf2016/plane_site/plane_site_flag.png)
+
 The flag is `{PCTF{3_many_s3cr3ts}`.

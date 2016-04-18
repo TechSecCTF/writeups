@@ -91,4 +91,6 @@ QUIT
 
 The password for the zip is `super_password1`, and opening the zip yields the image:
 
+[flag](https://github.com/TechSecCTF/writeups/blob/master/plaidctf2016/thestuff/flag.jpg)
+
 The flag is: `PCTF{LOOK_MA_NO_SSL}`.
