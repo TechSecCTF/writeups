@@ -37,7 +37,10 @@ Notice that our name and password are cast as strings, and then the SHA1 hashes 
 
 Thankfully, the day before this CTF, Google researchers published a novel attack on SHA1 that they dubbed Shattered with a set of example collisions in this [paper](https://shattered.io/static/shattered.pdf).
 
-The main idea behind this collision is ![this diagram](shattered.png). There are two pairs of blocks, M<sub>1</sub> and M<sub>2</sub>.
+The main idea behind this collision is this diagram:
+ ![this diagram](shattered.png).
+
+There are two pairs of blocks, M<sub>1</sub> and M<sub>2</sub>.
 
 CV refers to the internal state of the SHA1 hash, which is a set of five 4-byte variables named A,B,C,D,E. These five variables are updated during the processing of each block. When the final hash is output, it is simply a concatenation of these five variables, giving a 20-byte hash.
 
