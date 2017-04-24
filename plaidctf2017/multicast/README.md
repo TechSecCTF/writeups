@@ -1,3 +1,5 @@
+# Multicast (150 pts)
+
 Multicast was one of the earliest challenges released. We were given two files: a sage program called `generate.sage` and a file with 20 large integers called `data.txt`. This was `generate.sage`:
 
 ```
