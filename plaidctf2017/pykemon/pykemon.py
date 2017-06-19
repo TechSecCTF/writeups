@@ -14,7 +14,7 @@ class Pykemon(object):
             [30, 'Pyrigon', 'Pyrigon', 'images/pyrigon.png','Pyrigon is capable of reverting itself entirely back to program data and entering cyberspace.'],
             [20, 'Pyrodactyl', 'Pyrodactyl', 'images/pyrodactyl.png','Pyrodactyl is a Pykamon from the age of dinosaurs'],
             [10, 'Pytwo', 'Pytwo', 'images/pytwo.png','Pytwo is a Pykamon created by genetic manipulation'],
-            [0, 'FLAG', 'FLAG','images/flag.png', 'PCTF{N0t_4_sh1ny_M4g1k4rp}']
+            [0, 'FLAG', 'FLAG','images/flag.png', 'PCTF{XXXXXXXXXXXX}']
             ]
 
 
