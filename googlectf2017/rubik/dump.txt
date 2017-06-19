@@ -1,0 +1,66 @@
+Welcome to the Rubik's cube authentication server!
+
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+q) Quit
+2
+What username do you want to register?
+x
+What public key do you want to register?
+WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
+User registered!
+
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+q) Quit
+3
+What user do you want to log in as?
+x
+My public key is:
+YRBBWWGRWRYOYBOGGWRGBOOGOGYRRWRBYBBGRYWROOYOOYGGWYBWWB
+
+Please give me the result of:
+mykey.handshake(yourkey, "036e4e0a57cf8d05".from_hex().unwrap()).to_hex()
+1d740d43446f1755ec2fb066c2314444
+Your are now logged in!
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+4) List users
+q) Quit
+4
+List of registered users:
+Username: x
+Key: WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
+
+Username: admin
+Key: BGWYROYRWYRRGBRBGBOYRGWRWGGWYOYBROBOYWOGBRGYGBOYWOOWBW
+
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+4) List users
+q) Quit
+3
+What user do you want to log in as?
+admin
+My public key is:
+WOWOWROWOOYBYGGWGRBBBYBRBOWRGWORBYWYGROGOWRGBRYYBYGRYG
+
+Please give me the result of:
+mykey.handshake(yourkey, "d4692ecfacd26020".from_hex().unwrap()).to_hex()
+1fcd6bff7db21286935ada6004ca8593
+Your are now logged in!
+Here is the flag: CTF{StickelsKeyExchangeByHand}
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+4) List users
+q) Quit

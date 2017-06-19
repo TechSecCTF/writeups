@@ -2,8 +2,6 @@ import hashlib
 import socket
 import binascii
 
-
-
 def permute(s, method):
     o = [c for c in s]
     if method == "U":
@@ -171,7 +169,7 @@ def permute(s, method):
 
     return ''.join(o)
 
-
+# starting (solved) state of cube
 start= "WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY"
 
 def MITM_ATTACK(end):
@@ -197,29 +195,27 @@ def MITM_ATTACK(end):
 
     return intersect
 
+# Execute the U x' permutation reps times on state
 def A_op(state, reps):
   for i in range(reps):
     state = permute(permute(state, "U"), "X'")
   return state
 
+# Execute the L y' permutation reps times on state
 def B_op(state, reps):
-  for i in range(reps):
-    state = permute(permute(state, "Y"), "L'")
-  return state
-
-def C_op(state, reps):
-  for i in range(reps):
-    state = permute(permute(state, "U"), "L'")
-  return state
-
-def D_op(state, reps):
   for i in range(reps):
     state = permute(permute(state, "L"), "Y'")
   return state
 
+# Given a Rubik's Cube in state s1 and another cube in state s2
+# apply the permutation that takes a solved cube to s2, to s1
+# i.e. if:
+#   - s0 the solved Rubik's cube state
+#   - p1(s0) == s1
+#   - p2(s0) == s2   (where p1 and p2 are permutations)
+# then this function returns p2(s1) = p2(p1(s0))
 def compose(s1, s2):
   o3 = [c for c in s1]
-
 
   c1 = (s2[8], s2[14], s2[15])  # WRB
   c2 = (s2[2], s2[17], s2[18])  # WBO
@@ -336,20 +332,23 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('rubik.ctfcompetition.com',1337))
 
 def send(x):
-  print(x)
+  print('\033[92m' + x + '\033[0m')
   s.send(x.encode('utf-8') + b'\n')
 
 def recv():
   q = s.recv(2048).decode('utf-8')
-  print(q)
+  print(q.strip())
   return q
 
+# Hash a Rubik's Cube state with a given key using Blake2B
 def hash(state, salt):
   salt = binascii.unhexlify(salt)
   state = state.encode('utf-8')
   return hashlib.blake2b(state, digest_size=16, key=salt).hexdigest()
 
 if __name__ == '__main__':
+  # First register an account with the name 'x' and with
+  # public key as the null permutation
   recv()
   send('2')
   recv()
@@ -363,27 +362,33 @@ if __name__ == '__main__':
   q = recv()
   their_pubkey = q[q.index('is:\n')+4:q.index('is:\n')+4+54]
   salt = q[q.index('y, "')+4:q.index('y, "')+4+16]
-  print(their_pubkey)
-  print(salt)
   h = hash(their_pubkey, salt)
   send(h)
   recv()
+
+  # Once logged in, list all the users and record the admin's public key
   send('4')
   q = recv()
   admin_pubkey = q[q.index('Username: admin\nKey: ')+21:q.index('Username: admin\nKey: ')+21+54]
-  print(admin_pubkey)
+
+  # Next, try to login as admin
   send('3')
   recv()
   send('admin')
   q = recv()
   their_pubkey = q[q.index('is:\n')+4:q.index('is:\n')+4+54]
   salt = q[q.index('y, "')+4:q.index('y, "')+4+16]
-  print(their_pubkey)
-  print(salt)
+
+  # Execute the MiTM attack on the service's public key to decompose it into
+  # a * A_op + b * B_op
   (a, b) = MITM_ATTACK(their_pubkey)[0]
+
+  # Compute the state after a * A_op, admin_pubkey, then b * B_op
   a1 = A_op(start, a)
   a2 = compose(a1, admin_pubkey)
-  a3 = D_op(a2, b)
+  a3 = B_op(a2, b)
+
+  # Hash the state and sent it to login
   h = hash(a3, salt)
   send(h)
   recv()
