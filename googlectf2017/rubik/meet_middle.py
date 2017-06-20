@@ -196,13 +196,13 @@ def MITM_ATTACK(end):
     return intersect
 
 # Execute the U x' permutation reps times on state
-def A_op(state, reps):
+def X_op(state, reps):
   for i in range(reps):
     state = permute(permute(state, "U"), "X'")
   return state
 
 # Execute the L y' permutation reps times on state
-def B_op(state, reps):
+def Y_op(state, reps):
   for i in range(reps):
     state = permute(permute(state, "L"), "Y'")
   return state
@@ -286,7 +286,6 @@ def compose(s1, s2):
   us = [u1, u2, u3, u4, u5, u6]
 
   # centers
-
   for i in range(6):
     face = color_faces[i]
     for j in range(6):
@@ -380,13 +379,13 @@ if __name__ == '__main__':
   salt = q[q.index('y, "')+4:q.index('y, "')+4+16]
 
   # Execute the MiTM attack on the service's public key to decompose it into
-  # a * A_op + b * B_op
+  # a * X_op + b * Y_op
   (a, b) = MITM_ATTACK(their_pubkey)[0]
 
-  # Compute the state after a * A_op, admin_pubkey, then b * B_op
-  a1 = A_op(start, a)
+  # Compute the state after a * X_op, admin_pubkey, then b * Y_op
+  a1 = X_op(start, a)
   a2 = compose(a1, admin_pubkey)
-  a3 = B_op(a2, b)
+  a3 = Y_op(a2, b)
 
   # Hash the state and sent it to login
   h = hash(a3, salt)

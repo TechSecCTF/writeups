@@ -4,7 +4,7 @@ import hashlib
 import base64
 import math
 
-# number theory function
+# number theory functions
 
 def int_to_bytes(n):
   byte_length = math.ceil(n.bit_length() / 8.0)
@@ -42,7 +42,7 @@ def iroot(k, n):
   return s
 
 # The RSA key is actually not needed at all in the solution
-# Other than to verify that it is a 1024 bit public key modulus
+# other than to verify that it is a 1024 bit public key modulus
 # and that the public exponent is 3
 key = """-----BEGIN RSA PUBLIC KEY-----
 MIGdMA0GCSqGSIb3DQEBAQUAA4GLADCBhwKBgQDXnmZBhgORgRu6gXwGplTHHIfV
@@ -65,7 +65,7 @@ if __name__ == '__main__':
   z = cube_root_mod(d, m, t)
 
   # Pick a number between (2^1008)^(1/3) and (2*2^1008)^(1/3) and adjust
-  # it until it is equal to z modulo 2^280
+  # it to equal to z modulo 2^280
   i = 1 # some i's produce blocks with extra null bytes; adjust until lucky
   x = iroot(3, 2 * pow(2, 1008))
   x = x - (x % m) + z - i*m
