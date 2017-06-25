@@ -64,6 +64,11 @@ q) Quit
 What username do you want to register?
 x
 What public key do you want to register?
+```
+We'll set our public key to the solved Rubik's Cube state WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
+
+```
+What public key do you want to register?
 WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
 User registered!
 
@@ -81,17 +86,8 @@ YRBBWWGRWRYOYBOGGWRGBOOGOGYRRWRBYBBGRYWROOYOOYGGWYBWWB
 Please give me the result of:
 mykey.handshake(yourkey, "036e4e0a57cf8d05".from_hex().unwrap()).to_hex()
 1d740d43446f1755ec2fb066c2314444
-Your are now logged in!
-You have the following options:
-1) Public key service
-2) Register
-3) Login
-4) List users
-q) Quit
 ```
-
-For convenience, we'll set our public key to the solved Rubik's Cube state, which corresponds to the private key $(0,0)$. The shared secret is then just the hash of the service's public key:
-
+We compute the handshake with the following code:
 ```
 [rubik]> python3
 Python 3.6.1 (default, Apr  4 2017, 09:40:51)
@@ -102,10 +98,16 @@ Python 3.6.1 (default, Apr  4 2017, 09:40:51)
 >>> hashlib.blake2b(state, digest_size=16, key=salt).hexdigest()
 '1d740d43446f1755ec2fb066c2314444'
 ```
-
 Once we login we notice that we now have a fourth option in the service: `List users`. Doing so, shows us that there are two users, our own account and `admin`:
-
 ```
+Your are now logged in!
+You have the following options:
+1) Public key service
+2) Register
+3) Login
+4) List users
+q) Quit
+4
 List of registered users:
 Username: x
 Key: WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
@@ -128,7 +130,7 @@ An intersection means that we found an $(a,b)$ pair such that:
 
 This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $O(n^2)$ time and $O(1)$ space algorithm into a $O(n)$ time and $O(n)$ space algorithm.
 
-The Rust libraries used by the provided code don't seem to actually exist, so we needed to implement the protocol and the attack ourselves. We wrote some python code that applied the `U`, `L'`, `x'`, and `y` moves to a cube state and carried out the attack.
+The Rust libraries used by the provided code don't seem to actually exist, so we needed to implement the protocol and the attack ourselves. We wrote some [python code] (meet_middle.py#L5) that applied the `U`, `L'`, `x'`, and `y` moves to a cube state and carried out the attack.
 
 Interestingly, while the attack always worked on the service's public key, it never seemed to work on the admin's public key. Since our attack tries literally all possible $X^a Y^b$ states, this suggests that the admin's public key isn't a Rubik's Cube permutation of the specified form.
 
@@ -138,7 +140,7 @@ This ends up not being a major obstacle: suppose the service's public key is $P 
 
 and since we can determine $a$ and $b$ and know $Q$, we can compute $S$ as well.
 
-The trickiest part of this is being able to turn $Q$, which we only know as a Rubik's cube _state_ into the _permutation_ that corresponds to that state. This is possible with some careful code that tracks how the corners, edges and faces move around from the starting state to $Q$, and applying that same permutation to the state $X^a$.
+The trickiest part of this is being able to turn $Q$, which we only know as a Rubik's cube _state_ into the _permutation_ that corresponds to that state. This is possible with some careful [code](meet_middle.py#L217) that tracks how the corners, edges and faces move around from the starting state to $Q$, and applying that same permutation to the state $X^a$.
 
 Once we do this and successfully login as admin, we are given the flag `CTF{StickelsKeyExchangeByHand}`:
 
