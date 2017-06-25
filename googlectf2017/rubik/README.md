@@ -131,8 +131,9 @@ In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wi
 An intersection means that we found an $`(a,b)`$ pair such that:
 
 ```math
-X^a = P \cdot Y^{-b} \implies X^a Y^b = P
+X^a = P \cdot Y^{-b} \Rightarrow X^a Y^b = P
 ```
+
 This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $`O(n^2)`$ time and $`O(1)`$ space algorithm into a $`O(n)`$ time and $`O(n)`$ space algorithm.
 
 The Rust libraries used by the provided code don't seem to actually exist, so we needed to implement the protocol and the attack ourselves. We wrote some [python code](meet_middle.py#L5) that applied the `U`, `L'`, `x'`, and `y` moves to a cube state and carried out the attack.
