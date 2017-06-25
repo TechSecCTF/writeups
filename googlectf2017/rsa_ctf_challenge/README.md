@@ -68,7 +68,7 @@ Next, let's consider the leading bytes condition. This can be formulated mathema
 
 (The $`1008`$ comes from the fact that length of the padding plus the trailing bytes is $`1024 - 2 \cdot 8 = 1008`$ bits).
 
-So to finish, we just need to find an $`x`$ that satisfies both of these mathematical conditions. We can do this by picking any $`x`$ in the interval, and adjusting it slightly so that it equals $`d^v$ modulo $2^{280}`$. The resulting number's cube should have the appropriate leading and trailing bytes.
+So to finish, we just need to find an $`x`$ that satisfies both of these mathematical conditions. We can do this by picking any $`x`$ in the interval, and adjusting it slightly so that it equals $`d^v`$ modulo $`2^{280}`$. The resulting number's cube should have the appropriate leading and trailing bytes.
 
 There's actually one more condition that we've ignored so far: the padding string shouldn't contain any null bytes. This will happen by chance with probability $`(255/256)^{91} \approx 70\%`$ so we can just try a bunch of candidates until one works.
 
