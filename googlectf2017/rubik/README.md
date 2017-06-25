@@ -125,6 +125,7 @@ In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wi
 An intersection means that we found an $(a,b)$ pair such that:
 
 \[X^a = P \cdot Y^{-b} \implies X^a Y^b = P.\]
+![](https://latex.codecogs.com/gif.latex?\[X^a&space;=&space;P&space;\cdot&space;Y^{-b}&space;\implies&space;X^a&space;Y^b&space;=&space;P.\])
 
 This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $O(n^2)$ time and $O(1)$ space algorithm into a $O(n)$ time and $O(n)$ space algorithm.
 
