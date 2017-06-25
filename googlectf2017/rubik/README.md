@@ -67,7 +67,7 @@ What public key do you want to register?
 WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
 User registered!
 ```
-We'll set our public key to the solved Rubik's Cube state `WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY`, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
+We'll set our public key to the solved Rubik's Cube state `WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY`, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y^0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
 
 ```
 You have the following options:
