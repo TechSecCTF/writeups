@@ -44,7 +44,7 @@ S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B}
 Note that
 
 ```math
-$S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B}
+S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B}
 
 S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B} = X^{a_B}  \cdot X^{a_A}  \cdot Y^{b_A} \cdot Y^{b_B} = X^{a_B + a_A} \cdot Y^{b_B + b_A}
 ```
@@ -130,7 +130,7 @@ In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wi
 An intersection means that we found an $`(a,b)`$ pair such that:
 
 ```math
-X^a = P \cdot Y^{-b} \implies X^a Y^b = P.
+X^a = P \cdot Y^{-b} \implies X^a Y^b = P
 ```
 This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $`O(n^2)`$ time and $`O(1)`$ space algorithm into a $`O(n)`$ time and $`O(n)`$ space algorithm.
 
