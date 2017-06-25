@@ -1,4 +1,5 @@
 # Rubik (Crypto)
+*To see writeup with rendered Latex, see the [writeup](https://gitlab.com/techsec/writeups/tree/master/googlectf2017/rubik) on GitLab*
 
 We are given some [Rust code](handshake.rs) that implements a version of [Stickel's Key Exchange protocol](https://en.wikipedia.org/wiki/Non-commutative_cryptography#Stickel.E2.80.99s_key_exchange_protocol) for the [Rubik's Cube Group](https://en.wikipedia.org/wiki/Rubik%27s_Cube_group).
 

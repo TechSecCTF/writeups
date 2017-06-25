@@ -1,5 +1,7 @@
 # RSA CTF Challenge (Crypto)
 
+*To see writeup with rendered Latex, see the [writeup](https://gitlab.com/techsec/writeups/tree/master/googlectf2017/rsa_ctf_challenge) on GitLab*
+
 We are first presented with a simple HTML form that asks us to sign the word `challenge` in order to login.
 
 ![initial form](images/initial.png)
