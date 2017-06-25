@@ -14,37 +14,42 @@ To talk about a series of moves that can be applied to a Rubik's Cube, most peop
 
 [This site](https://ruwix.com/the-rubiks-cube/notation/) allows you to apply a series of moves to a cube to explore the notation.
 
-For the purposes of the protocol there are really only two important operations: $X$ = `U x'` and $Y$ = `L y'`. We'll borrow notation from group theory to talk about composing these operations. For example, $X^2$ represents the operation `U x' U x'`, and $X \cdot Y^3$ represents the operation `U x' L y' L y' L y'`.
+For the purposes of the protocol there are really only two important operations: $`X`$ = `U x'` and $`Y`$ = `L y'`. We'll borrow notation from group theory to talk about composing these operations. For example, $`X^2`$ represents the operation `U x' U x'`, and $`X \cdot Y^3`$ represents the operation `U x' L y' L y' L y'`.
 
-Note that in general Rubik's Cube moves do not commute, so $X \cdot Y \neq Y \cdot X$. Finally, the _inverse_ of an operation is the operation that exactly undoes it, so the inverse of $Y$ is $Y^{-1}$ = `y L'`.
+Note that in general Rubik's Cube moves do not commute, so $`X \cdot Y \neq Y \cdot X`$. Finally, the _inverse_ of an operation is the operation that exactly undoes it, so the inverse of $`Y`$ is $`Y^{-1}`$ = `y L'`.
 
 Another important concept from group theory is that of the _order_ of an element, which is simply the number of times we need to compose an element with itself until we produce the identity element.
 
-It turns out that the orders of $X$ and $Y$ are both 1260, which also happens to be the maximum possible order of any element of the Rubik's Cube group. (We actually verified this manually by applying `U x'` repeatedly to a physical cube and noticing that after 420 operations the cube returned to its original state with three corners rotated 120 degrees clockwise.)
+It turns out that the orders of $`X`$ and $`Y`$ are both 1260, which also happens to be the maximum possible order of any element of the Rubik's Cube group. (We actually verified this manually by applying `U x'` repeatedly to a physical cube and noticing that after 420 operations the cube returned to its original state with three corners rotated 120 degrees clockwise.)
 
 ## The Protocol
 
-The protocol allows two users, Alice and Bob, to agree upon a shared secret. Each user's private key is a pair of 64-bit numbers $(a, b)$. The corresponding public key is the Rubik's cube state corresponding to the permutation
+The protocol allows two users, Alice and Bob, to agree upon a shared secret. Each user's private key is a pair of 64-bit numbers $`(a, b)`$. The corresponding public key is the Rubik's cube state corresponding to the permutation
+```math
+P = X^a  \cdot Y^b
+```
 
-\[P = X^a  \cdot Y^b\]
+Namely, apply `U x'` $`a`$ times and then apply `L y'` $`b`$ times.
 
-Namely, apply `U x'` $a$ times and then apply `L y'` $b$ times.
-
-Let Alice's parameters be $(a_A, b_A, P_A)$, where $(a_A, b_A)$ is her private key and $P_A$ is her public key. Define $(a_B, b_B, P_B)$ similarly for Bob. To agree on a shared secret, Alice and Bob exchange their public keys, and Alice computes:
-
-\[S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A}\]
+Let Alice's parameters be $`(a_A, b_A, P_A)`$, where $`(a_A, b_A)`$ is her private key and $`P_A`$ is her public key. Define $`(a_B, b_B, P_B)`$ similarly for Bob. To agree on a shared secret, Alice and Bob exchange their public keys, and Alice computes:
+```math
+S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A}
+```
 
 and Bob computes:
 
-\[S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B}\]
-
+```math
+S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B}
+```
 Note that
 
-\[S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B}\]
+```math
+$S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B}
 
-\[S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B} = X^{a_B}  \cdot X^{a_A}  \cdot Y^{b_A} \cdot Y^{b_B} = X^{a_B + a_A} \cdot Y^{b_B + b_A}\]
+S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B} = X^{a_B}  \cdot X^{a_A}  \cdot Y^{b_A} \cdot Y^{b_B} = X^{a_B + a_A} \cdot Y^{b_B + b_A}
+```
 
-Thus, $S_A = S_B$. In the service, this shared secret is then hashed with a random salt to produce the authentication token.
+Thus, $`S_A = S_B`$. In the service, this shared secret is then hashed with a random salt to produce the authentication token.
 
 The service represents the state of a Rubik's cube by listing out the colors of the 54 squares in a particular order. The starting solved state of the cube corresponds to the white face being `U`, the red face being `F`, and the the blue face being `R`.
 
@@ -67,7 +72,7 @@ What public key do you want to register?
 WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
 User registered!
 ```
-We'll set our public key to the solved Rubik's Cube state `WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY`, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y^0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
+We'll set our public key to the solved Rubik's Cube state `WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY`, which corresponds to the private key $`(0,0)`$. This allows us to compute the handshake simply by taking the hash of the service's public key: $`S = X^{a_B} \cdot X^0Y^0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B`$.
 
 ```
 You have the following options:
@@ -118,28 +123,30 @@ Clearly, we must log-in as `admin` to get the flag. To do so, we need to break t
 
 ## The Attack
 
-To log in as admin, we will need to provide the handshake between the admin and the service. A naive approach would be, for both the admin and the service, to iterate through all possible $(a, b)$ pairs applying $X^a \cdot Y^b$ to a solved cube and check if the resulting state equals their respective public keys. At first it would seem that this would require $2^{64} \cdot 2^{64}$ checks, because $a$ and $b$ are 64-bit integers, but since the orders of $X$ and $Y$ are much smaller, we actually only have to check integers in the range $[0, 1259]$. This requires only $1260^2$ checks, which is very feasible.
+To log in as admin, we will need to provide the handshake between the admin and the service. A naive approach would be, for both the admin and the service, to iterate through all possible $`(a, b)`$ pairs applying $`X^a \cdot Y^b`$ to a solved cube and check if the resulting state equals their respective public keys. At first it would seem that this would require $`2^{64} \cdot 2^{64}`$ checks, because $`a`$ and $`b`$ are 64-bit integers, but since the orders of $`X`$ and $`Y`$ are much smaller, we actually only have to check integers in the range $`[0, 1259]`$. This requires only $`1260^2`$ checks, which is very feasible.
 
-In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wikipedia.org/wiki/Meet-in-the-middle_attack): we first generate the set of all states given by $X^a$ for $a \in [0, 1259]$. Then we generate the set of all states given by $P \cdot Y^{-b}$ for $b \in [0, 1259]$ and look for an intersection in the two sets.
+In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wikipedia.org/wiki/Meet-in-the-middle_attack): we first generate the set of all states given by $`X^a`$ for $`a \in [0, 1259]`$. Then we generate the set of all states given by $`P \cdot Y^{-b}`$ for $`b \in [0, 1259]`$ and look for an intersection in the two sets.
 
-An intersection means that we found an $(a,b)$ pair such that:
+An intersection means that we found an $`(a,b)`$ pair such that:
 
-\[X^a = P \cdot Y^{-b} \implies X^a Y^b = P.\]
-![](https://latex.codecogs.com/gif.latex?\[X^a&space;=&space;P&space;\cdot&space;Y^{-b}&space;\implies&space;X^a&space;Y^b&space;=&space;P.\])
-
-This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $O(n^2)$ time and $O(1)$ space algorithm into a $O(n)$ time and $O(n)$ space algorithm.
+```math
+X^a = P \cdot Y^{-b} \implies X^a Y^b = P.
+```
+This is an example of a [space-time tradeoff](https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff) which allows us to turn a $`O(n^2)`$ time and $`O(1)`$ space algorithm into a $`O(n)`$ time and $`O(n)`$ space algorithm.
 
 The Rust libraries used by the provided code don't seem to actually exist, so we needed to implement the protocol and the attack ourselves. We wrote some [python code](meet_middle.py#L5) that applied the `U`, `L'`, `x'`, and `y` moves to a cube state and carried out the attack.
 
-Interestingly, while the attack always worked on the service's public key, it never seemed to work on the admin's public key. Since our attack tries literally all possible $X^a Y^b$ states, this suggests that the admin's public key isn't a Rubik's Cube permutation of the specified form.
+Interestingly, while the attack always worked on the service's public key, it never seemed to work on the admin's public key. Since our attack tries literally all possible $`X^a Y^b`$ states, this suggests that the admin's public key isn't a Rubik's Cube permutation of the specified form.
 
-This ends up not being a major obstacle: suppose the service's public key is $P = X^a Y^b$ and the admin's public key is some arbitrary permutation $Q$. The service will compute the state:
+This ends up not being a major obstacle: suppose the service's public key is $`P = X^a Y^b`$ and the admin's public key is some arbitrary permutation $`Q`$. The service will compute the state:
 
-\[S = X^a \cdot Q \cdot Y^b\]
+```math
+S = X^a \cdot Q \cdot Y^b
+```
 
-and since we can determine $a$ and $b$ and know $Q$, we can compute $S$ as well.
+and since we can determine $`a`$ and $`b`$ and know $`Q`$, we can compute $`S`$ as well.
 
-The trickiest part of this is being able to turn $Q$, which we only know as a Rubik's cube _state_ into the _permutation_ that corresponds to that state. This is possible with some careful [code](meet_middle.py#L217) that tracks how the corners, edges and faces move around from the starting state to $Q$, and applying that same permutation to the state $X^a$.
+The trickiest part of this is being able to turn $`Q`$, which we only know as a Rubik's cube _state_ into the _permutation_ that corresponds to that state. This is possible with some careful [code](meet_middle.py#L217) that tracks how the corners, edges and faces move around from the starting state to $`Q`$, and applying that same permutation to the state $`X^a`$.
 
 Once we do this and successfully login as admin, we are given the flag `CTF{StickelsKeyExchangeByHand}`:
 
