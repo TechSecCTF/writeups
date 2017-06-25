@@ -27,7 +27,7 @@ For digital signatures `D` is an ASN.1 encoded value that includes information a
 
 `D = 3020300c06082a864886f70d020505000410 || MD5('challenge')`
 
-To create an RSA signature, we construct a PKCS1v1.5 block of the above format, treat it as an integer $`c`$, and compute $`m = c^d (\mathrm{mod} \  n)`$. The result $`m`$ is our signature.
+To create an RSA signature, we construct a PKCS1v1.5 block of the above format, treat it as an integer $`c`$, and compute $`m = c^d \ (\mathrm{mod} \  n)`$. The result $`m`$ is our signature.
 
 ## The Vulnerability
 
@@ -37,7 +37,7 @@ Perhaps it's possible that the website builders confused RSA Encryption with RSA
 
 How can we take advantage of this? On it's own this doesn't help us, but when combined with the fact that the RSA public exponent is very small ($`e = 3`$), it becomes relatively straightforward to forge valid signatures.
 
-If we can craft a padding string such that the resulting PKCS1v1.5 block is a perfect cube, we can simply take the cube root of it and use it as our signature $`m`$. Then, the validator will compute $`m^e (\mathrm{mod} \  n) = m^3`$, and the result will be our crafted block.
+If we can craft a padding string such that the resulting PKCS1v1.5 block is a perfect cube, we can simply take the cube root of it and use it as our signature $`m`$. Then, the validator will compute $`m^e \ (\mathrm{mod} \  n) = m^3`$, and the result will be our crafted block.
 
 ## The Attack
 
@@ -48,12 +48,12 @@ Let's start with the trailing bytes condition. `00 || D` is $`1 + 18 + 16 = 35`$
 We want:
 
 ```math
-x^3 = d (\mathrm{mod} \  2^{280})
+x^3 = d \ (\mathrm{mod} \  2^{280})
 ```
 Elementary number theory tells us that if $`v`$ is the inverse of $`3`$ modulo $`\phi(2^{280})`$, Then
 
 ```math
-x = d^v (\mathrm{mod} \  2^{280})
+x = d^v \ (\mathrm{mod} \  2^{280})
 ```
 
 (This only works if $`d`$ has a modular cube root, which is true only for odd $`d`$. Happily, our $`d`$ is odd.)
