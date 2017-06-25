@@ -27,7 +27,7 @@ For digital signatures `D` is an ASN.1 encoded value that includes information a
 
 `D = 3020300c06082a864886f70d020505000410 || MD5('challenge')`
 
-To create an RSA signature, we construct a PKCS1v1.5 block of the above format, treat it as an integer $`c`$, and compute $`m = c^d \pmod{n}`$. The result $`m`$ is our signature.
+To create an RSA signature, we construct a PKCS1v1.5 block of the above format, treat it as an integer $`c`$, and compute $`m = c^d (\mathrm{mod} n)`$. The result $`m`$ is our signature.
 
 ## The Vulnerability
 
