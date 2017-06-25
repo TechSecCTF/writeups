@@ -44,7 +44,7 @@ S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B}
 Note that
 
 ```math
-S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B}
+S_A = X^{a_A}  \cdot P_B \cdot Y^{b_A} = X^{a_A}  \cdot X^{a_B}  \cdot Y^{b_B} \cdot Y^{b_A} = X^{a_A + a_B} \cdot Y^{b_A + b_B} \\
 
 S_B = X^{a_B}  \cdot P_A \cdot Y^{b_B} = X^{a_B}  \cdot X^{a_A}  \cdot Y^{b_A} \cdot Y^{b_B} = X^{a_B + a_A} \cdot Y^{b_B + b_A}
 ```
