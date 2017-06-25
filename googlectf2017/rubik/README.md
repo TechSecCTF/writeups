@@ -64,14 +64,12 @@ q) Quit
 What username do you want to register?
 x
 What public key do you want to register?
-```
-We'll set our public key to the solved Rubik's Cube state WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
-
-```
-What public key do you want to register?
 WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY
 User registered!
+```
+We'll set our public key to the solved Rubik's Cube state `WWWWWWWWWGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBOOOYYYYYYYYY`, which corresponds to the private key $(0,0)$. This allows us to compute the handshake simply by taking the hash of the service's public key: $S = X^{a_B} \cdot X^0Y0 \cdot Y^{a_B} = X^{a_B} \cdot Y^{a_B} = P_B$.
 
+```
 You have the following options:
 1) Public key service
 2) Register
@@ -86,8 +84,9 @@ YRBBWWGRWRYOYBOGGWRGBOOGOGYRRWRBYBBGRYWROOYOOYGGWYBWWB
 Please give me the result of:
 mykey.handshake(yourkey, "036e4e0a57cf8d05".from_hex().unwrap()).to_hex()
 1d740d43446f1755ec2fb066c2314444
+Your are now logged in!
 ```
-We compute the handshake with the following code:
+We compute the handshake with a short python snippet:
 ```
 [rubik]> python3
 Python 3.6.1 (default, Apr  4 2017, 09:40:51)
@@ -100,7 +99,6 @@ Python 3.6.1 (default, Apr  4 2017, 09:40:51)
 ```
 Once we login we notice that we now have a fourth option in the service: `List users`. Doing so, shows us that there are two users, our own account and `admin`:
 ```
-Your are now logged in!
 You have the following options:
 1) Public key service
 2) Register
@@ -120,7 +118,7 @@ Clearly, we must log-in as `admin` to get the flag. To do so, we need to break t
 
 ## The Attack
 
-The naive approach would be to iterate through all possible $(a, b)$ pairs applying $X^a \cdot Y^b$ to a solved cube and checking if the resulting state equalled the public key. At first it would seem that this would require $2^{64} \cdot 2^{64}$ checks, because $a$ and $b$ are 64-bit integers, but since the orders of $X$ and $Y$ are much smaller, we actually only have to check integers in the range $[0, 1259]$. This requires only $1260^2$ checks, which is very feasible.
+To log in as admin, we will need to provide the handshake between the admin and the service. A naive approach would be, for both the admin and the service, to iterate through all possible $(a, b)$ pairs applying $X^a \cdot Y^b$ to a solved cube and check if the resulting state equals their respective public keys. At first it would seem that this would require $2^{64} \cdot 2^{64}$ checks, because $a$ and $b$ are 64-bit integers, but since the orders of $X$ and $Y$ are much smaller, we actually only have to check integers in the range $[0, 1259]$. This requires only $1260^2$ checks, which is very feasible.
 
 In fact, we can do even better using a [Meet-in-the-Middle attack](https://en.wikipedia.org/wiki/Meet-in-the-middle_attack): we first generate the set of all states given by $X^a$ for $a \in [0, 1259]$. Then we generate the set of all states given by $P \cdot Y^{-b}$ for $b \in [0, 1259]$ and look for an intersection in the two sets.
 
