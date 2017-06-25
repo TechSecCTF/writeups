@@ -20,7 +20,7 @@ A PKCS1v1.5 block looks like this:
 
 where:
  - `BT` is the block type and is 01 for private key operations (digital signatures) and 02 for public key operations (encryption)
- - `PS` is the padding string and consists of $`k - 3 - |D|`$ bytes where $k$ is the byte-length of the RSA modulus. For block type 01, the padding bytes should all be FF and for block type 02, the padding bytes should be "pseudorandomly generated and nonzero."
+ - `PS` is the padding string and consists of $`k - 3 - |D|`$ bytes where $`k`$ is the byte-length of the RSA modulus. For block type 01, the padding bytes should all be FF and for block type 02, the padding bytes should be "pseudorandomly generated and nonzero."
  - `D` is the actual data in question.
 
 For digital signatures `D` is an ASN.1 encoded value that includes information about the hash function used and the hash of the message to be signed. For our purposes,
