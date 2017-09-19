@@ -1,11 +1,11 @@
 import binascii
 import struct
 
-w = binascii.unhexlify('220f02c883fbe083c0200f10cd0013b8')
-m = binascii.unhexlify('ffffffffffffff00ffffffffffffff00')
-z = binascii.unhexlify('000000000000032900000000000002d6')
+# Initial value of xmm5
+xmm5_start = binascii.unhexlify('220f02c883fbe083c0200f10cd0013b8')
 
-constraints = [
+# The data stored at 0x7DA8 and compared against esi
+esi_consts = [
                 '70021102',
                 '55022902',
                 '91025e02',
@@ -15,41 +15,47 @@ constraints = [
                 '5d029002',
                 '8f02df02'
               ]
+esi_consts = [struct.unpack('<I', binascii.unhexlify(c))[0] for c in esi_consts]
+esi_consts = esi_consts[::-1]
 
+# Our 16 variables ('a' through 'p')
 variables = [chr(ord('a') + i) for i in range(16)]
 
-constraints = [struct.unpack('<I', binascii.unhexlify(c))[0] for c in constraints]
-constraints = constraints[::-1]
-
-def printz(c):
-  s1 = c % (1 << 0x10)
-  s2 = (c - s1) >> (0x10)
+def esi_to_xmm5(esi):
+  s1 = esi % (1 << 0x10)
+  s2 = (esi - s1) >> (0x10)
   w = struct.pack('>Q', s1) + struct.pack('>Q', s2)
-  return binascii.hexlify(w)
+  return w
 
 def print_constraints():
-  for i in range(7, -1, -1):
-    c = constraints[i-1]
-    z = binascii.unhexlify(printz(c))
+  for i in range(8):
+    prev_esi = esi_consts[i-1]
+    xmm5 = esi_to_xmm5(prev_esi)
     if i == 0:
-      z = w
+      xmm5 = xmm5_start
+
+    esi = esi_consts[i]
+    s1 = esi % (1 << 0x10)
+    s2 = (esi - s1) >> (0x10)
+
+    # sum of absolute differences between xmm5 and our flag
     s = ''
-    q = constraints[i]
-    s1 = q % (1 << 0x10)
-    s2 = (q - s1) >> (0x10)
     for j in range(8):
       if j == 7-i:
-        s += 'abs(0-' + str(ord(z[j])) + ') + '
+        # This is the masking step
+        s += 'abs(0-' + str(ord(xmm5[j])) + ') + '
         continue
-      s += 'abs(' + variables[j] + '-' + str(ord(z[j])) + ') + '
+      s += 'abs(' + variables[j] + '-' + str(ord(xmm5[j])) + ') + '
     s += '0 == {}, '.format(s1)
     print(s)
+
     s = ''
     for j in range(8,16):
       if j-8 == 7-i:
-        s += 'abs(0-' + str(ord(z[j])) + ') + '
+        # This is the masking step
+        s += 'abs(0-' + str(ord(xmm5[j])) + ') + '
         continue
-      s += 'abs(' + variables[j] + '-' + str(ord(z[j])) + ') + '
+      s += 'abs(' + variables[j] + '-' + str(ord(xmm5[j])) + ') + '
     s += '0 == {}, '.format(s2)
     print(s)
 
