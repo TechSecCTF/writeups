@@ -5,7 +5,7 @@ Writeup by: Andrew He
 ## Challenge
 Crypto, 500 pts, 32 solves
 
-Written by Brendan McMillion, Cloudflare
+Written by Brendan McMillion & Krzysztof Kwiatkowski, Cloudflare
 
 ### Files
 
